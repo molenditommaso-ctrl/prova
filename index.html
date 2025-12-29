@@ -22,4 +22,59 @@
 </head>
 <body>
   <h1>La mia posizione</h1>
-  <button onclick="mostraPosizione()">Mos
+  <button onclick="mostraPosizione()">Mostra posizione</button>
+  <button onclick="inviaSMS()">Invia via SMS</button>
+  <button onclick="apriGoogleMaps()">Apri su Google Maps</button>
+
+  <p id="risultato"></p>
+
+  <script>
+    let ultimaPosizione = null;
+
+    function mostraPosizione() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(posizione) {
+            ultimaPosizione = posizione.coords;
+            document.getElementById("risultato").innerHTML =
+              "Latitudine: " + posizione.coords.latitude +
+              "<br>Longitudine: " + posizione.coords.longitude;
+          },
+          function() {
+            document.getElementById("risultato").innerHTML =
+              "Permesso negato o errore";
+          }
+        );
+      } else {
+        document.getElementById("risultato").innerHTML =
+          "Geolocalizzazione non supportata";
+      }
+    }
+
+    function inviaSMS() {
+      if (!ultimaPosizione) {
+        alert("Prima mostra la posizione!");
+        return;
+      }
+      const lat = ultimaPosizione.latitude;
+      const lon = ultimaPosizione.longitude;
+      const testo = "La mia posizione: https://maps.google.com/?q=" + lat + "," + lon;
+
+      // Sostituisci con il numero a cui vuoi inviare
+      const numero = "+391234567890";
+
+      window.location.href = "sms:" + numero + "?body=" + encodeURIComponent(testo);
+    }
+
+    function apriGoogleMaps() {
+      if (!ultimaPosizione) {
+        alert("Prima mostra la posizione!");
+        return;
+      }
+      const lat = ultimaPosizione.latitude;
+      const lon = ultimaPosizione.longitude;
+      window.open("https://maps.google.com/?q=" + lat + "," + lon, "_blank");
+    }
+  </script>
+</body>
+</html>
