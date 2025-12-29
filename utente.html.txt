@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Utente - Invia posizione</title>
+</head>
+<body>
+
+<h1>Invia la tua posizione</h1>
+<button onclick="inviaPosizione()">Invia posizione</button>
+<p id="risultato"></p>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+  // Configurazione Firebase (metti qui le tue chiavi)
+  const firebaseConfig = {
+    apiKey: "AIzaSyBMNf2ZSYGGZXT_vUYeIaoiux3vmeTL7TM",
+    authDomain: "ciaomondogps.firebaseapp.com",
+    databaseURL: "https://ciaomondogps-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "ciaomondogps",
+    storageBucket: "ciaomondogps.firebasestorage.app",
+    messagingSenderId: "15570782104",
+    appId: "1:15570782104:web:a526c2710a99e44f6c0ded"
+  };
+
+  // Inizializza Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function inviaPosizione() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(posizione){
+        const dati = {
+          lat: posizione.coords.latitude,
+          lon: posizione.coords.longitude,
+          timestamp: Date.now()
+        };
+        db.ref('posizioni/utente1').set(dati);
+        document.getElementById("risultato").innerText = "Posizione inviata!";
+      }, function() {
+        document.getElementById("risultato").innerText = "Permesso negato o errore";
+      });
+    } else {
+      document.getElementById("risultato").innerText = "Geolocalizzazione non supportata";
+    }
+  }
+</script>
+
+</body>
+</html>

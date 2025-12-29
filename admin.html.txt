@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Vedi posizione</title>
+</head>
+<body>
+
+<h1>Posizione utente</h1>
+<p id="posizione">Caricamento...</p>
+<div id="mappa" style="width:100%;height:400px;margin-top:20px;"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- Google Maps -->
+<script src="https://maps.googleapis.com/maps/api/js?key=LA_TUA_CHIAVE_MAPS"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBMNf2ZSYGGZXT_vUYeIaoiux3vmeTL7TM",
+    authDomain: "ciaomondogps.firebaseapp.com",
+    databaseURL: "https://ciaomondogps-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "ciaomondogps",
+    storageBucket: "ciaomondogps.firebasestorage.app",
+    messagingSenderId: "15570782104",
+    appId: "1:15570782104:web:a526c2710a99e44f6c0ded"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  let mappa;
+  let marker;
+
+  function inizializzaMappa(lat, lon) {
+    const pos = {lat: lat, lng: lon};
+    if(!mappa) {
+      mappa = new google.maps.Map(document.getElementById('mappa'), {
+        center: pos,
+        zoom: 15
+      });
+      marker = new google.maps.Marker({position: pos, map: mappa});
+    } else {
+      marker.setPosition(pos);
+      mappa.setCenter(pos);
+    }
+  }
+
+  db.ref('posizioni/utente1').on('value', function(snapshot){
+    const dati = snapshot.val();
+    if(dati){
+      document.getElementById("posizione").innerText = 
+        `Latitudine: ${dati.lat}, Longitudine: ${dati.lon}`;
+      inizializzaMappa(dati.lat, dati.lon);
+    }
+  });
+</script>
+
+</body>
+</html>
