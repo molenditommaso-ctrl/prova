@@ -2,9 +2,8 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Posizione</title>
+  <title>Posizione e SMS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       font-family: Arial;
@@ -14,36 +13,13 @@
     button {
       font-size: 18px;
       padding: 10px 20px;
+      margin: 10px;
+    }
+    p {
+      font-size: 18px;
     }
   </style>
 </head>
-
 <body>
   <h1>La mia posizione</h1>
-
-  <button onclick="mostraPosizione()">Mostra posizione</button>
-
-  <p id="risultato"></p>
-
-  <script>
-    function mostraPosizione() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function(posizione) {
-            document.getElementById("risultato").innerHTML =
-              "Latitudine: " + posizione.coords.latitude +
-              "<br>Longitudine: " + posizione.coords.longitude;
-          },
-          function() {
-            document.getElementById("risultato").innerHTML =
-              "Permesso negato o errore";
-          }
-        );
-      } else {
-        document.getElementById("risultato").innerHTML =
-          "Geolocalizzazione non supportata";
-      }
-    }
-  </script>
-</body>
-</html>
+  <button onclick="mostraPosizione()">Mos
